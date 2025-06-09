@@ -1,7 +1,7 @@
 
 #ifndef INC_STM32F407XX_H_
 #define INC_STM32F407XX_H_
-
+/*****************************************Device Specific Header File**********************************/
 #include <stdint.h>
 
 #define __vo volatile
@@ -369,5 +369,6 @@ typedef struct
 
 
 #include "stm32f407xx_gpio_driver.h"
+#include "stm32f407xx_spi_driver.h"
 
 #endif /* INC_STM32F407XX_H_ */
