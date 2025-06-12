@@ -52,21 +52,37 @@ void SPI_Init(SPI_Handle_t *pSPIHandle)
 
 	if(pSPIHandle->SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_FD)
 	{
-		/* 15 th bit should be 0 ,ie;2 lines unidirectional mode*/
+		/* 15 th bit should be 0 ,ie;2 lines unidirectional mode */
 		tempreg &= ~(1<<15);
 	}
 	else if(pSPIHandle->SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_HD)
 	{
-		/* 15 th bit should be 1 ,ie;one line bidirectional mode*/
+		/* 15 th bit should be 1 ,ie;one line bidirectional mode */
 		tempreg |= (1<<15);
 	}
 	else if(pSPIHandle->SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_SIMPLEX_RXONLY)
 	{
-		/* 15 th bit should be 0 and 10 th bit 1*/
+		/* 15 th bit should be 0 and 10 th bit 1 */
 		tempreg &= ~(1<<15);
 		tempreg |= (1<<10);
 	}
+	/* Clock speed = fclk/16 */
+	tempreg |= (pSPIHandle->SPIConfig.SPI_SclkSpeed<<3);
 
+	/* Data frame format*/
+	tempreg &= ~(pSPIHandle->SPIConfig.SPI_DFF<<11);
+
+	/* SPI_CPOL */
+	tempreg &= ~(pSPIHandle->SPIConfig.SPI_CPOL<<1);
+
+	/* SPI_CPHASE */
+	tempreg &= ~(pSPIHandle->SPIConfig.SPI_CPHA<<0);
+
+	// /* SPI_SSM */
+	// tempreg &= ~(pSPIHandle->SPIConfig.SPI_SSM<<9);
+
+	/* Cpoy the bits in tempreg to CR1 reg */
+	pSPIHandle->pSPIx->CR1 = tempreg;
 }
 
 
